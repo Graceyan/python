@@ -51,14 +51,17 @@ data[data.density > 100]
    e.g. 
    flights_by_carrier = df.pivot_table(index='flight_date', columns='unique_carrier', values='flight_num', aggfunc='count')
 
-   
-df.country_code. (df.user_country, inplace=True)
-2. df=df.drop_duplicates(['user_id'], keep='last')
-3. df=pd.merge(df1,df2,how='left',left_on='account_id',right_on='ads_account_id',indicator=True)
-   df0=df[df['_merge']=='left_only']
-4. df0=df.dropna(subset=['LINCC_last_step', 'BTC_last_page', 'Whitelist_type'], how='all')
-replace value --> data.loc[data.company_name =='The Imprint Doctor','twitter_handle_lower'] = "theimprintdr"
-5. Functions
+8. Common functions:  
+   (1) df.country_code.fillna(df.user_country, inplace=True)
+   (2) df=df.drop_duplicates(['user_id'], keep='last')
+   (3) df=pd.merge(df1,df2,how='left',left_on='account_id',right_on='ads_account_id',indicator=True)
+       df0=df[df['_merge']=='left_only']
+   (4) df0=df.dropna(subset=['LINCC_last_step', 'BTC_last_page', 'Whitelist_type'], how='all')
+   (5) replace value --> data.loc[data.company_name =='The Imprint Doctor','twitter_handle_lower'] = "theimprintdr"
+   (6) pd.concat
+       pd.append
+
+9. Functions
     Example:
     def filter_desktop_mobile(platform):
         if platform in mobile:
@@ -67,13 +70,16 @@ replace value --> data.loc[data.company_name =='The Imprint Doctor','twitter_han
             return 'Desktop'
         else:
             return 'Not Known'
-6. The .apply() method allows you to apply a function to a column of a DataFrame. 
+
+10. The .apply() method allows you to apply a function to a column of a DataFrame. 
 e.g. data['platform'].apply(filter_desktop_mobile)
      data['delayed'] = data['arr_delay'].apply(lambda x: x > 0)
-7. Resetting Index
+
+11. Resetting Index
     data2 = data1.copy()
     data2 = data2.reset_index()
     del data2['index']
+
 
 ## Modeling Steps
 1. Load data:
@@ -260,4 +266,7 @@ or pd.read_csv('.csv', thousands=",")
        proba_array_handles = model2.predict_proba(X_predict_handles)
        cols = ['<$500 Spend Probability', '>=$500 Spend Probability']
        proba_handles_df = pd.DataFrame(proba_array_handles,columns=cols)
+
+
+
 ## Plotting
