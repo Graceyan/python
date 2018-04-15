@@ -3,6 +3,8 @@
   .keys()
   .values()
   .items()
+# in Python, there is no native array data structure. So, we use Python lists instead of an array.
+# A Pandas Series is a one-dimensional array of indexed data.
 
 # Example: flatten the lists in dicts and create a new dict
   def most_common(menu):
@@ -28,14 +30,34 @@
 
 0. Create a dataframe --> right = DataFrame({'key1': ['foo', 'foo', 'bar', 'bar'], 'key2': ['one', 'one', 'one', 'two'], 'rval': [4, 5, 6, 7]})
 1. Select a specific row --> df.ix[1] or Select several rows --> df[:3]; Select a column --> df['colname'] or Select multiple colums --> df[['colname1','colname2']][14:18]
-2. Subsetting
-3. Partially matching text with .str.contains()
+2. Random sample from dataframe: df.sample(n=5)
+3. Sorting: df.sort_values(by='colname', ascending=False)[:10]
+4. Subsetting
+data[data.density > 100]
 
-df.country_code.fillna(df.user_country, inplace=True)
+    .loc[] --> the loc attribute allows indexing and slicing that always references the explicit index
+    .iloc[] --> the iloc attribute allows indexing and slicing that always references the implicit Python-style index
+
+5. Partially matching text with .str.contains()
+6. Groupby
+   df.groupby(['LINCC_last_step','LINCC_last_vist_date'])['user_id'].count()
+   .unstack()
+7. Pivot Tables
+   You can define how values are grouped by:
+   index= (“Rows” in Excel)
+   columns=
+   We define which values are summarized by: values= the name of the column of values to be aggregated in the ultimate table, then grouped by the Index and Columns and aggregated according to the Aggregation Function
+   We define how values are summarized by: aggfunc= (Aggregation Function) how rows are summarized, such as sum, mean, or count
+   e.g. 
+   flights_by_carrier = df.pivot_table(index='flight_date', columns='unique_carrier', values='flight_num', aggfunc='count')
+
+   
+df.country_code. (df.user_country, inplace=True)
 2. df=df.drop_duplicates(['user_id'], keep='last')
 3. df=pd.merge(df1,df2,how='left',left_on='account_id',right_on='ads_account_id',indicator=True)
    df0=df[df['_merge']=='left_only']
 4. df0=df.dropna(subset=['LINCC_last_step', 'BTC_last_page', 'Whitelist_type'], how='all')
+replace value --> data.loc[data.company_name =='The Imprint Doctor','twitter_handle_lower'] = "theimprintdr"
 5. Functions
     Example:
     def filter_desktop_mobile(platform):
@@ -45,9 +67,70 @@ df.country_code.fillna(df.user_country, inplace=True)
             return 'Desktop'
         else:
             return 'Not Known'
-6. The .apply() method allows you to apply a function to a column of a DataFrame. e.g. data['platform'].apply(filter_desktop_mobile)
+6. The .apply() method allows you to apply a function to a column of a DataFrame. 
+e.g. data['platform'].apply(filter_desktop_mobile)
+     data['delayed'] = data['arr_delay'].apply(lambda x: x > 0)
+7. Resetting Index
+    data2 = data1.copy()
+    data2 = data2.reset_index()
+    del data2['index']
 
 ## Modeling Steps
+1. Load data:
+   pd.read_csv('mattermark_adv_handle_df.csv',encoding='utf-8')
+or pd.read_csv('.csv', thousands=",")
+2. Data Quality Check:
+   (0) data.describe()
+   (1) Duplicates
+        df.drop_duplicates(subset='company_id')
+   (2) Missing Data
+        df[pd.isnull(df.id)==False]
+        data['employees_flag'] = data['employees'].apply(update_null)
+        data.employees.fillna(0,inplace=True)
+        
+         # Functions
+            ### Remove Columns
+                def remove_col_from_df(df,col_list):
+                    for col in col_list:
+                        try:
+                            df.drop(col,axis=1,inplace=True)
+                        except:
+                            print str(col) + ' not present to drop'
+                    return df
 
+            ### Change Null as 0 else 1
+                def update_null(c):
+                    if pd.isnull(c) == False:
+                        return 1
+                    else:
+                        return 0
 
+            ### Check NAs percentage in columns
+                def get_NA_ratio (df, col_list):
+                    for col in col_list:
+                        try:
+                            print str(col) + ": " + str(df[col].isnull().sum().astype(float)/len(df[col]))
+                        except:
+                            print str(col) + ' cannot get NAs'
+    (3) Data Type
+        data['employees'] = data['employees'].astype(int)
+        data.loc[data["has_mobile"] == "Yes", "has_mobile"] = 1
+    
+    (4) Scatter Plot + Histogram
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt 
+        import numpy
+
+        #data['cached_growth_score_log'] = np.log(data['cached_growth_score'].astype('float'))
+        #data['custom_score_log'] = np.log(data['custom_score'].astype('float'))
+        plt.scatter(y=data.mindshare_score,x=data.mattermark_score)
+        plt.show()
+        
+        bins = numpy.linspace(0, 2000, 10)
+        plt.hist(data.cached_growth_score, bins, alpha=0.5)
+        plt.show()
+        
+        
+    
+    
 ## Plotting
