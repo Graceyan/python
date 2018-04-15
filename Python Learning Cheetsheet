@@ -1,0 +1,53 @@
+# Python Learning Cheetsheet
+# Dictionary
+  .keys()
+  .values()
+  .items()
+
+# Example: flatten the lists in dicts and create a new dict
+  def most_common(menu):
+    newlist = []
+    for value in menu.values():
+      newlist += value
+    newdict = {}
+    for item in newlist:
+      if item not in newdict.keys():
+        newdict[item] = 1
+      else:
+        newdict[item] += 1
+    name = None 
+    longest = -1
+    for item in newdict.keys():
+      if newdict[item] > longest:
+        longest = newdict[item]
+        name = item
+    return "%s:%s" % (name, longest)
+    
+# PANDAS
+## Basic Data Manipulation
+
+0. Create a dataframe --> right = DataFrame({'key1': ['foo', 'foo', 'bar', 'bar'], 'key2': ['one', 'one', 'one', 'two'], 'rval': [4, 5, 6, 7]})
+1. Select a specific row --> df.ix[1] or Select several rows --> df[:3]; Select a column --> df['colname'] or Select multiple colums --> df[['colname1','colname2']][14:18]
+2. Subsetting
+3. Partially matching text with .str.contains()
+
+df.country_code.fillna(df.user_country, inplace=True)
+2. df=df.drop_duplicates(['user_id'], keep='last')
+3. df=pd.merge(df1,df2,how='left',left_on='account_id',right_on='ads_account_id',indicator=True)
+   df0=df[df['_merge']=='left_only']
+4. df0=df.dropna(subset=['LINCC_last_step', 'BTC_last_page', 'Whitelist_type'], how='all')
+5. Functions
+    Example:
+    def filter_desktop_mobile(platform):
+        if platform in mobile:
+            return 'Mobile'
+        elif platform == 'Desktop':
+            return 'Desktop'
+        else:
+            return 'Not Known'
+6. The .apply() method allows you to apply a function to a column of a DataFrame. e.g. data['platform'].apply(filter_desktop_mobile)
+
+## Modeling Steps
+
+
+## Plotting
