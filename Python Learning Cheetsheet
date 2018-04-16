@@ -228,24 +228,28 @@ or pd.read_csv('.csv', thousands=",")
         
         print(classification_report(y_test, output[:,1]))
         
+      Cross Validation
+        cv_scores = CV.cross_val_score(model, X, y,cv=10)
+        cv_predictions = CV.cross_val_predict(model5,X,y,cv=10)
+
+        print metrics.accuracy_score(y, cv_predictions)
+
+       #Precision and recall for expected outcomes
+        print metrics.classification_report(y,cv_predictions)
+       
+        print("CV score: {:0.3f} +/- {:0.3f}".format(cvscores.mean(), cvscores.std()))
+       
+       #Leave One Out: 
+        scores = cross_val_score(model, X, y, cv=LeaveOneOut(len(X)))
+        scores.mean()
+   
    (6) Variable Importance    
         from tabulate import tabulate
         headers = ["name", "score"]
         values = sorted(zip(X_train.columns, model2.feature_importances_), key=lambda x: x[1] * -1)
         print(tabulate(values, headers, tablefmt="plain"))
-   
-   (7) Cross Validation
-       cv_scores = CV.cross_val_score(model, X, y,cv=10)
-       cv_predictions = CV.cross_val_predict(model5,X,y,cv=10)
-
-       print metrics.accuracy_score(y, cv_predictions)
-
-      #Precision and recall for expected outcomes
-       print metrics.classification_report(y,cv_predictions)
-       
-       print("CV score: {:0.3f} +/- {:0.3f}".format(cvscores.mean(), cvscores.std()))
     
-   (8) Grid Search
+   (7) Grid Search
       from sklearn.model_selection import GridSearchCV
 
 
@@ -264,7 +268,7 @@ or pd.read_csv('.csv', thousands=",")
       print("Best Score:")
       print(gsmodel.best_score_)
       
-   (9) Prediction
+   (8) Prediction
       #Prediction data set
        X_predict_handles = model_predict_df.copy()
        proba_array_handles = model2.predict_proba(X_predict_handles)
