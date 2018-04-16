@@ -43,6 +43,10 @@ data[data.density > 100]
    df.groupby(['LINCC_last_step','LINCC_last_vist_date'])['user_id'].count()
    .unstack()
 7. Pivot Tables
+   DataFrame.pivot_table(data, values=None, index=None, columns=None,
+                      aggfunc='mean', fill_value=None, margins=False,
+                      dropna=True, margins_name='All')
+                      
    You can define how values are grouped by:
    index= (“Rows” in Excel)
    columns=
