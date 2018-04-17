@@ -122,7 +122,7 @@ or pd.read_csv('.csv', thousands=",")
                             print str(col) + ": " + str(df[col].isnull().sum().astype(float)/len(df[col]))
                         except:
                             print str(col) + ' cannot get NAs'
-    (3) Data Type
+    (3) Data Type + Encoding
         data['employees'] = data['employees'].astype(int)
         data.loc[data["has_mobile"] == "Yes", "has_mobile"] = 1
     
@@ -278,3 +278,17 @@ or pd.read_csv('.csv', thousands=",")
 
 
 ## Plotting
+
+
+## Sqlite
+    import sqlite3
+
+    conn = sqlite3.connect("mydatabase.db")
+    cursor = conn.cursor()
+
+    sql = """
+    DELETE FROM albums
+    WHERE artist = 'John Doe'
+    """
+    cursor.execute(sql)
+    conn.commit()
