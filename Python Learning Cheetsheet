@@ -292,3 +292,10 @@ or pd.read_csv('.csv', thousands=",")
     """
     cursor.execute(sql)
     conn.commit()
+    
+## Hypothesis Test/Statistics
+    import scipy.stats as stats
+    One-sample T test (checks whether a sample mean differs from the population mean) --> stats.ttest_1samp(a= minnesota_ages,               # Sample data  
+    popmean= population_ages.mean())  # Pop mean
+    Two-sample T test (mean diff) --> stats.ttest_ind(a= minnesota_ages, b= wisconsin_ages, equal_var=False)    # Assume samples have equal variance?
+    Paired T test --> stats.ttest_rel(a = before, b = after)
