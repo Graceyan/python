@@ -42,6 +42,9 @@ data[data.density > 100]
 6. Groupby
    df.groupby(['LINCC_last_step','LINCC_last_vist_date'])['user_id'].count()
    .unstack()
+   df.sort_values('start_date', ascending = True).groupby(['id']).cumcount()+1
+   or
+   df.groupby(['id'])['start_date'].rank(method='first',ascending=True)
 7. Pivot Tables
    DataFrame.pivot_table(data, values=None, index=None, columns=None,
                       aggfunc='mean', fill_value=None, margins=False,
@@ -53,7 +56,7 @@ data[data.density > 100]
    We define which values are summarized by: values= the name of the column of values to be aggregated in the ultimate table, then grouped by the Index and Columns and aggregated according to the Aggregation Function
    We define how values are summarized by: aggfunc= (Aggregation Function) how rows are summarized, such as sum, mean, or count
    e.g. 
-   flights_by_carrier = df.pivot_table(index='flight_date', columns='unique_carrier', values='flight_num', aggfunc='count')
+   flights_by_carrier = df.pivot_table(index='flight_date', columns='unique_carrier', values='flight_num', aggfunc='count').reset_index()
 
 8. Common functions:  
    (1) df.country_code.fillna(df.user_country, inplace=True)
@@ -62,8 +65,8 @@ data[data.density > 100]
        df0=df[df['_merge']=='left_only']
    (4) df0=df.dropna(subset=['LINCC_last_step', 'BTC_last_page', 'Whitelist_type'], how='all')
    (5) replace value --> data.loc[data.company_name =='The Imprint Doctor','twitter_handle_lower'] = "theimprintdr"
-   (6) pd.concat
-       pd.append
+   (6) pd.concat([dfA,dfB])
+       df1.append(df2)
 
 9. Functions
     Example:
